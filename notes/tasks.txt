@@ -130,44 +130,91 @@ ON pc1.speed = pc2.speed AND pc1.ram = pc2.ram
 INNER JOIN PC pc3
 ON pc2.speed = pc3.speed AND pc2.ram = pc3.ram AND pc3.model < pc1.model
 
-
-
 №17
 
-
+SELECT DISTINCT Product.type, Product.model, Laptop.speed
+FROM Laptop
+INNER JOIN Product ON Laptop.model = Product.model
+WHERE Laptop.speed < (SELECT MIN(speed) FROM PC)
 
 №18
 
-
-
+SELECT DISTINCT Product.maker, Printer.price
+FROM Product
+INNER JOIN Printer ON Product.model = Printer.model
+WHERE Printer.color != 'n' AND Printer.price = (SELECT MIN(price)
+FROM Printer
+WHERE color != 'n')
 
 №19
 
-
-
+SELECT Product.maker, AVG(Laptop.screen) AS Avg_size
+FROM Laptop
+INNER JOIN Product ON Product.model = Laptop.model
+GROUP BY Product.maker
 
 №20
 
-
-
+SELECT maker, COUNT(type) AS total_of_models
+FROM Product
+WHERE type = 'PC'
+GROUP BY maker
+HAVING COUNT(type) >= 3
 
 №21
 
-
+SELECT Product.maker, MAX(PC.price) AS max_price
+FROM PC
+INNER JOIN Product ON Product.model = PC.model
+GROUP BY Product.maker
 
 №22
 
-
-
+SELECT speed, AVG(price) AS avg_price
+FROM PC
+WHERE speed > 600
+GROUP BY speed
 
 №23
 
-
+Select DISTINCT maker
+FROM
+(SELECT Product.maker
+FROM Product
+INNER JOIN PC ON PC.model = Product.model
+WHERE PC.speed >= 750 AND
+Product.maker IN
+(SELECT Product.maker
+FROM Product
+INNER JOIN Laptop ON Laptop.model = Product.model
+WHERE Laptop.speed >= 750)) t
 
 №24
 
+WITH t AS (
+SELECT price AS max_price, model
+FROM
+Laptop
+WHERE price = (SELECT MAX(price) FROM Laptop)
 
+UNION
 
+SELECT price AS max_price, model
+FROM
+PC
+WHERE price = (SELECT MAX(price) FROM PC)
+
+UNION
+
+SELECT price AS max_price, model
+FROM
+Printer
+WHERE price = (SELECT MAX(price) FROM Printer))
+
+SELECT model
+FROM
+t
+WHERE max_price = (SELECT MAX(max_price) FROM t)
 
 №25
 
