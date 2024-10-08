@@ -1,1 +1,204 @@
+№1
+
+SELECT model, speed, hd
+FROM PC
+where price < 500
+
+№2
+
+SELECT DISTINCT(maker)
+FROM  Product
+WHERE type = 'Printer'
+
+№3
+
+SELECT model, ram, screen
+FROM laptop
+WHERE price > 1000
+
+№4
+
+SELECT *
+FROM Printer
+WHERE color != 'n'
+
+№5
+
+SELECT model, speed, hd
+FROM PC
+WHERE price < 600 AND (cd = '12x' OR cd = '24x')
+
+№6
+
+SELECT DISTINCT Product.maker, Laptop.speed
+FROM 
+Product
+INNER JOIN Laptop ON Product.model = Laptop.model
+WHERE Laptop.hd >= 10
+
+№7
+
+SELECT Product.model, PC.price
+FROM 
+PC
+INNER JOIN Product ON Product.model = PC.model
+WHERE Product.maker = 'B'
+
+UNION
+
+SELECT Product.model, Laptop.price
+FROM 
+Laptop
+INNER JOIN Product ON Product.model = Laptop.model
+WHERE Product.maker = 'B'
+
+UNION
+
+SELECT Product.model, Printer.price
+FROM 
+Printer
+INNER JOIN Product ON Product.model = Printer.model
+WHERE Product.maker = 'B'
+
+№8
+
+SELECT DISTINCT maker
+FROM Product
+WHERE type = 'PC' AND maker NOT IN (SELECT DISTINCT maker
+FROM Product
+WHERE type = 'laptop')
+
+№9
+
+SELECT DISTINCT Product.maker
+FROM
+Product
+INNER JOIN PC ON Product.model = PC.model
+WHERE PC.speed >= 450
+
+№10
+
+SELECT model, price
+FROM Printer
+WHERE price = (SELECT MAX(price)
+FROM Printer)
+
+№11
+
+SELECT AVG(speed) AS Avg_speed
+FROM PC
+
+№12
+
+SELECT AVG(speed) AS Avg_speed
+FROM Laptop
+WHERE price > 1000
+
+№13
+
+SELECT AVG(PC.speed) AS Avg_speed
+FROM 
+PC
+INNER JOIN PRODUCT ON PC.model = Product.model
+WHERE Product.maker = 'A'
+
+№14
+
+SELECT Classes.class, Ships.name, Classes.country
+FROM 
+Classes
+INNER JOIN Ships ON Classes.class = Ships.class
+WHERE Classes.numGuns >= 10
+
+№15
+
+SELECT hd
+FROM PC
+GROUP BY hd
+HAVING COUNT(hd) > 1
+
+№16
+
+SELECT pc1.model AS max_model, pc3.model AS min_model, pc1.speed, pc1.ram
+FROM PC pc1
+INNER JOIN
+(SELECT speed, ram
+FROM PC
+GROUP BY speed, ram
+HAVING COUNT(*) = 2) pc2
+ON pc1.speed = pc2.speed AND pc1.ram = pc2.ram
+INNER JOIN PC pc3
+ON pc2.speed = pc3.speed AND pc2.ram = pc3.ram AND pc3.model < pc1.model
+
+
+
+№17
+
+
+
+№18
+
+
+
+
+№19
+
+
+
+
+№20
+
+
+
+
+№21
+
+
+
+№22
+
+
+
+
+№23
+
+
+
+№24
+
+
+
+
+№25
+
+
+
+
+№26
+
+
+
+
+№27
+
+
+
+
+№28
+
+
+
+
+№29
+
+
+
+
+№30
+
+
+
+
+№31
+
 
