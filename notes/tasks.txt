@@ -119,16 +119,12 @@ HAVING COUNT(hd) > 1
 
 №16
 
-SELECT pc1.model AS max_model, pc3.model AS min_model, pc1.speed, pc1.ram
-FROM PC pc1
-INNER JOIN
-(SELECT speed, ram
+SELECT DISTINCT PC.model, PCdub.model, PC.speed, PC.ram
 FROM PC
-GROUP BY speed, ram
-HAVING COUNT(*) = 2) pc2
-ON pc1.speed = pc2.speed AND pc1.ram = pc2.ram
-INNER JOIN PC pc3
-ON pc2.speed = pc3.speed AND pc2.ram = pc3.ram AND pc3.model < pc1.model
+INNER JOIN PC AS PCdub ON PC.speed = PCdub.speed AND
+PC.ram = PCdub.ram AND
+PC.model != PCdub.model AND
+PC.model > PCdub.model
 
 №17
 
@@ -274,17 +270,89 @@ WHERE total_of_model = 1
 
 №29
 
+SELECT DISTINCT Income_o.point, Income_o.date, Income_o.inc, Outcome_o.out
+FROM Income_o
+LEFT JOIN Outcome_o ON Income_o.point = Outcome_o.point AND
+Income_o.date = Outcome_o.date
 
+UNION
 
+SELECT DISTINCT Outcome_o.point, Outcome_o.date, Income_o.inc, Outcome_o.out
+FROM Income_o
+RIGHT JOIN Outcome_o ON Income_o.point = Outcome_o.point AND
+Income_o.date = Outcome_o.date
 
 №30
 
+SELECT point, date, SUM(outcome), SUM(income)
+FROM
+(SELECT Income.point, Income.date,
+SUM(Outcome.out) AS outcome , SUM(Income.inc) AS income
+FROM Income
+LEFT JOIN Outcome On Income.code = Outcome.code AND
+Income.point = Outcome.point AND
+Income.date = Outcome.date
+GROUP BY Income.point, Income.date
 
+UNION
 
+SELECT Outcome.point, Outcome.date,
+SUM(Outcome.out) AS outcome , SUM(Income.inc) AS income
+FROM Income
+RIGHT JOIN Outcome On Income.code = Outcome.code AND
+Income.point = Outcome.point AND
+Income.date = Outcome.date
+GROUP BY Outcome.point, Outcome.date) t
+
+GROUP BY point, date
 
 №31
 
 SELECT DISTINCT class, country
 FROM classes
 WHERE bore >= 16
+
+№32
+
+
+№33
+
+
+№34
+
+
+№35
+
+
+№36
+
+
+№37
+
+
+№38
+
+
+№39
+
+
+№40
+
+
+№40
+
+
+№41
+
+
+№42
+
+
+№43
+
+
+№44
+
+
+№45
 
