@@ -218,23 +218,59 @@ WHERE max_price = (SELECT MAX(max_price) FROM t)
 
 №25
 
+WITH t AS (
+SELECT DISTINCT Product.maker, PC.speed
+FROM Product
+INNER JOIN PC ON Product.model = PC.model
+WHERE PC.ram = (SELECT MIN(ram) FROM PC))
 
-
+SELECT DISTINCT maker
+FROM Product
+WHERE type = 'Printer' AND maker IN (SELECT maker
+FROM t
+WHERE speed = (SELECT MAX(speed) FROM t))
 
 №26
 
+WITH t AS(
+SELECT *
+FROM Product
+WHERE maker = 'A')
 
+SELECT AVG(price) AS Avg_price
+FROM
+(SELECT Laptop.price
+FROM t
+INNER JOIN Laptop ON t.model = Laptop.model
 
+UNION ALL
+
+SELECT PC.price
+FROM t
+INNER JOIN PC ON t.model = PC.model) tt
 
 №27
 
+WITH t AS(
+SELECT *
+FROM Product
+WHERE maker IN (SELECT DISTINCT maker
+FROM Product
+WHERE type = 'Printer'))
 
-
+SELECT t.maker, AVG(PC.hd) AS avg_hd
+FROM t
+INNER JOIN PC ON t.model = PC.model
+GROUP BY t.maker
 
 №28
 
-
-
+SELECT COUNT(*) AS answ
+FROM
+(SELECT maker, COUNT(DISTINCT model) AS total_of_model
+FROM Product
+GROUP BY maker) t
+WHERE total_of_model = 1
 
 №29
 
@@ -248,4 +284,7 @@ WHERE max_price = (SELECT MAX(max_price) FROM t)
 
 №31
 
+SELECT DISTINCT class, country
+FROM classes
+WHERE bore >= 16
 
