@@ -28,6 +28,7 @@ CREATE TABLE зал (
     ID_зала INT PRIMARY KEY AUTO_INCREMENT,
     ID_кинотеатра INT,
     номер_зала INT,
+    экран VARCHAR(50),
     посадка INT,
     FOREIGN KEY (ID_кинотеатра) REFERENCES кинотеатр(ID_кинотеатра)
 );
@@ -48,14 +49,26 @@ CREATE TABLE Сеанс (
     FOREIGN KEY (ID_зала) REFERENCES зал(ID_зала)
 );
 
+CREATE TABLE пользователь (
+    ID_пользователя INT PRIMARY KEY AUTO_INCREMENT,
+    карта_лояльности VARCHAR(50),
+    баллы DECIMAL(10, 2) DEFAULT 0.00,
+    ФИО VARCHAR(100),
+    почта VARCHAR(100),
+    номер VARCHAR(20),
+    дата_рождения DATE
+);
+
 CREATE TABLE билет (
     ID_билета INT PRIMARY KEY AUTO_INCREMENT,
     ID_сеанса INT,
+    ID_пользователя INT, -- Добавлено для связи с пользователем
     ряд_место INT,
     статус ENUM('продан', 'доступен'),
     ID_тарифа INT,
     FOREIGN KEY (ID_сеанса) REFERENCES сеанс(ID_сеанса),
-    FOREIGN KEY (ID_тарифа) REFERENCES тариф(ID_тарифа)
+    FOREIGN KEY (ID_тарифа) REFERENCES тариф(ID_тарифа),
+    FOREIGN KEY (ID_пользователя) REFERENCES пользователь(ID_пользователя)
 );
 
 
